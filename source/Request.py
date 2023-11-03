@@ -48,35 +48,6 @@ def pokemon_upload():
     data_moves = getting_moves.json()
     data_stats = getting_stats.json()
     data_types = getting_types.json()
-
-
-    # type_map = {}
-    # for type_data in data_types:
-    #     if type_data['form'] == 'Normal':
-    #         type_map[type_data['pokemon_name']] = type_data['type']
-
-    # cursor = con.cursor()
-
-    # for stats_data in data_stats:
-    #     if stats_data['form'] == 'Normal':
-    #         pokemon_name = stats_data['pokemon_name']
-    #         type = type_map.get(pokemon_name, None)
-    #         if type:
-    #             atk, hp, defense = stats_data['atk'], stats_data['hp'], stats_data['def']
-    #             dexnum = stats_data['dex']
-    #             pokename = stats_data['pokemon_name']
-
-    #             if len(type) == 1:
-    #                 query = """INSERT INTO pokemon (dexnum, pokename, poketype1, pokeatk, pokehp, pokedef) VALUES (%s,%s,%s,%s,%s,%s)"""
-    #                 cursor.execute(query, (dexnum, pokename, type[0], atk, hp, defense))
-    #             else:
-    #                 # El Pokémon tiene dos tipos
-    #                 query = """INSERT INTO pokemon (dexnum, pokename, poketype1, poketype2, pokeatk, pokehp, pokedef) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
-    #                 cursor.execute(query, (dexnum, pokename, type[0], type[1], atk, hp, defense))
-    # con.commit()
-    # print('Se han agregado los valores correctamente.')
-    # con.close()
-    # count = 0
     for n in data_stats:
         if n['form'] == 'Normal':
             for i in data_moves:
@@ -95,21 +66,44 @@ def pokemon_upload():
                                 cursor.execute(query, record_insert)
                                 print('Se ha cargado el pokémon con 2 tipos.')
                                 con.commit()
-                        con.commit()
-                        # for h in i['fast_moves']:
-                        #     cursor.execute(f"SELECT * FROM fast_moves WHERE name = '{h}'")
-                        #     ataque_id = cursor.fetchone()
-                        #     print(f"El id del ataque es: {ataque_id[0]}")
-                        #     print(f"La cuenta es: {count}")
-                        #     cursor.execute(f"SELECT * FROM pokemon WHERE idpokemon = {count}")
-                        #     pokemon_id = cursor.fetchone()
-                        #     print(f"El id del pokémon es: {pokemon_id[0]}")
-                        #     fa_query = """INSERT INTO pokemon_fast_attacks (id_pokemon, id_fast_attack) VALUES (%s, %s)"""
-                        #     fa_insert = (pokemon_id[0], ataque_id[0])
-                        #     cursor.execute(fa_query, fa_insert)
-                        #     print('Se ha cargado el ataque rápido.')
-                        #     con.commit()
-        # count+=1
-    # con.commit()
     con.close()
-pokemon_upload()
+
+def fk_table_upload_fast_attack():
+    con = call_db()
+    cursor = con.cursor()
+    getting_moves = requests.get('https://pogoapi.net/api/v1/current_pokemon_moves.json')
+    data_moves = getting_moves.json()
+    cursor.execute("SELECT * FROM pokemon")
+    pokemon_list = cursor.fetchall()
+    cursor.execute("SELECT * FROM fast_moves")
+    fast_attack_list = cursor.fetchall()
+    for n in pokemon_list:
+        for k in data_moves:
+            if k['form'] == 'Normal' and k['pokemon_name'] == n[2]:
+                for i in k['fast_moves']:
+                    for m in fast_attack_list:
+                        if i == m[1]:
+                            cursor.execute(f"INSERT INTO pokemon_fast_attacks (id_pokemon, id_fast_attack) VALUES ({n[0]}, {m[0]})")
+                            print(f"Se ha cargado el ataque {i} en {n[2]}")
+                            con.commit()
+    con.close()
+
+def fk_table_upload_charge_attack():
+    con = call_db()
+    cursor = con.cursor()
+    getting_moves = requests.get('https://pogoapi.net/api/v1/current_pokemon_moves.json')
+    data_moves = getting_moves.json()
+    cursor.execute("SELECT * FROM pokemon")
+    pokemon_list = cursor.fetchall()
+    cursor.execute("SELECT * FROM charge_moves")
+    charge_attack_list = cursor.fetchall()
+    for n in pokemon_list:
+        for k in data_moves:
+            if k['form'] == 'Normal' and k['pokemon_name'] == n[2]:
+                for i in k['charged_moves']:
+                    for m in charge_attack_list:
+                        if i == m[1]:
+                            cursor.execute(f"INSERT INTO pokemon_charge_attacks (id_pokemon, id_charge_attack) VALUES ({n[0]}, {m[0]})")
+                            print(f"Se ha cargado el ataque {i} en {n[2]}")
+                            con.commit()
+    con.close()
