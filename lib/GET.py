@@ -129,4 +129,5 @@ def initialization():
     print('.')
     print('..')
     print('...')
-    print('Se han cargado todos los datos a la base de datos correctamente.')
+    print('Se han cargado todos los datos a la base de datos correctamente.\n')
+# initialization()
