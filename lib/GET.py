@@ -24,9 +24,9 @@ def fast_move_upload():
         cursor.execute(insert_query, record_to_insert)
         print(f"Se ha cargado {n['name']} a la base de datos.")
     con.commit()
-    print('\n-------------------------------------------')
+    print('\n---------------------------------------------------------------------------')
     print('Se han agregado todos los ataques rápidos a la base de datos correctamente.')
-    print('-------------------------------------------\n')
+    print('---------------------------------------------------------------------------\n')
     con.close()
 
 def charge_move_upload():
@@ -40,9 +40,9 @@ def charge_move_upload():
         cursor.execute(insert_query, record_to_insert)
         print(f"Se ha cargado {n['name']} a la base de datos.")
     con.commit()
-    print('\n-------------------------------------------')
+    print('\n----------------------------------------------------------------------------')
     print('Se han agregado todos los ataques cargados a la base de datos correctamente.')
-    print('-------------------------------------------\n')
+    print('----------------------------------------------------------------------------\n')
     con.close()
 
 def pokemon_upload():
@@ -67,9 +67,9 @@ def pokemon_upload():
                         cursor.execute(query, record_insert)
                         print(f"{n['pokemon_name']} ha sido cargado correctamente.")
     con.commit()
-    print('\n-------------------------------------------')
+    print('\n-------------------------------------------------------------------')
     print('Se han agregado todos los Pokémon a la base de datos correctamente.')
-    print('-------------------------------------------\n')
+    print('-------------------------------------------------------------------\n')
     con.close()
 
 def fk_table_upload_fast_attack():
@@ -90,9 +90,9 @@ def fk_table_upload_fast_attack():
                             cursor.execute(f"INSERT INTO pokemon_fast_attacks (id_pokemon, id_fast_attack) VALUES ({n[0]}, {m[0]})")
                             print(f"Se ha cargado el ataque {i} en {n[2]}.")
     con.commit()
-    print('\n-------------------------------------------')
+    print('\n------------------------------------------------------------------')
     print('Se ha vinculado los ataques rápidos con los Pokémon correctamente.')
-    print('-------------------------------------------\n')
+    print('------------------------------------------------------------------\n')
     con.close()
 
 def fk_table_upload_charge_attack():
@@ -113,9 +113,9 @@ def fk_table_upload_charge_attack():
                             cursor.execute(f"INSERT INTO pokemon_charge_attacks (id_pokemon, id_charge_attack) VALUES ({n[0]}, {m[0]})")
                             print(f"Se ha cargado el ataque {i} en {n[2]}.")
     con.commit()
-    print('\n-------------------------------------------')
+    print('\n-------------------------------------------------------------------')
     print('Se ha vinculado los ataques cargados con los Pokémon correctamente.')
-    print('-------------------------------------------\n')
+    print('-------------------------------------------------------------------\n')
     con.close()
 
 def initialization():
@@ -128,6 +128,7 @@ def initialization():
     fk_table_upload_charge_attack()
     print('.')
     print('..')
-    print('...')
-    print('Se han cargado todos los datos a la base de datos correctamente.\n')
-# initialization()
+    print('...\n')
+    print('----------------------------------------------------------------')
+    print('Se han cargado todos los datos a la base de datos correctamente.')
+    print('----------------------------------------------------------------')
