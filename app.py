@@ -38,8 +38,8 @@ while answer.answer != '0':
         pokemon_show()
         keep_going()
     elif select == '3': #Buscar un Pokémon
-
-        pass
+        pokemon_search()
+        keep_going()
     elif select == '4': #Buscar un ataque cargado/rápido
 
         pass

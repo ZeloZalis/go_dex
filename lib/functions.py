@@ -33,8 +33,23 @@ def pokemon_show():
         print(f'Ha ocurrido un error: {e}')
 
 def pokemon_search():
-
-    pass
+    con = call_db()
+    cursor = con.cursor()
+    try:
+        look_for = input('\nIngresa el nombre del Pokémon:\n')
+        cursor.execute(f"SELECT * FROM pokemon WHERE pokename = '{look_for.capitalize()}'")
+        found = cursor.fetchone()
+        if found[4] != None:
+            print('\n------------------------')
+            print(f"Nombre: {found[2]}\nTipos: {found[3]}/{found[4]}\nATK: {found[5]}\nHP: {found[6]}\nDEF: {found[7]}")
+            print('------------------------')
+        else:
+            print('\n------------------------')
+            print(f"Nombre: {found[2]}\nTipo: {found[3]}\nATK: {found[5]}\nHP: {found[6]}\nDEF: {found[7]}")
+            print('------------------------')
+    except Exception as e:
+        print(f'Error: {e}')
+    con.close()
 
 def moves_search():
 
