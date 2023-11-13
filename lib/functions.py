@@ -39,9 +39,25 @@ def pokemon_search():
         look_for = input('\nIngresa el nombre del Pokémon:\n')
         cursor.execute(f"SELECT * FROM pokemon WHERE pokename = '{look_for.capitalize()}'")
         found = cursor.fetchone()
+        cursor.execute(f"SELECT * FROM pokemon_fast_attacks WHERE id_pokemon = {found[0]}")
+        fast_moves = cursor.fetchall()
+        fast_list = []
+        cursor.execute(f"SELECT * FROM pokemon_charge_attacks WHERE id_pokemon = {found[0]}")
+        charged_moves = cursor.fetchall()
+        charged_list = []
+        for n in fast_moves:
+            cursor.execute(f"SELECT * FROM fast_moves WHERE id = {n[1]}")
+            fattack = cursor.fetchone()
+            fast_list.append(fattack[1])
+        for n in charged_moves:
+            cursor.execute(f"SELECT * FROM charge_moves WHERE id = {n[1]}")
+            cattack = cursor.fetchone()
+            charged_list.append(cattack[1])
         if found[4] != None:
             print('\n------------------------')
             print(f"Nombre: {found[2]}\nTipos: {found[3]}/{found[4]}\nATK: {found[5]}\nHP: {found[6]}\nDEF: {found[7]}")
+            print(f"Ataques rápidos: {fast_list}")
+            print(f"Ataques cargados: {charged_list}")
             print('------------------------')
         else:
             print('\n------------------------')
@@ -52,8 +68,19 @@ def pokemon_search():
     con.close()
 
 def moves_search():
-
-    pass
+    con = call_db()
+    cursor = con.cursor()
+    try:
+        look_for = input('\nIngresa el nombre del ataque rápido:\n')
+        cursor.execute(f"SELECT * FROM fast_moves where name = '{look_for.capitalize()}'")
+        found = cursor.fetchone()
+        print(type(found))
+        # print("\n-----------------")
+        # print(f"Nombre: {found[1]}\nTipo: {found[2]}\nDaño: {found[3]}\nEnergía: {found[4]}\nVelocidad: {found[5]}")
+        # print("-----------------")
+    except Exception as e:
+        print(f'Error: {e}')
+    con.close()
 
 def fast_moves_show():
     try:

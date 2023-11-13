@@ -41,8 +41,8 @@ while answer.answer != '0':
         pokemon_search()
         keep_going()
     elif select == '4': #Buscar un ataque cargado/rápido
-
-        pass
+        moves_search()
+        keep_going()
     elif select == '5': #Ver la lista de ataques rápidos
         fast_moves_show()
         keep_going()
