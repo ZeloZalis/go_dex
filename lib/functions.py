@@ -1,6 +1,7 @@
 import psycopg2
 from decouple import config
 from lib.GET import call_db
+import string
 
 def table_check():
     try:
@@ -72,12 +73,20 @@ def moves_search():
     cursor = con.cursor()
     try:
         look_for = input('\nIngresa el nombre del ataque rápido:\n')
-        cursor.execute(f"SELECT * FROM fast_moves where name = '{look_for.capitalize()}'")
+        cursor.execute(f"SELECT * FROM fast_moves WHERE name = '{string.capwords(look_for)}'")
         found = cursor.fetchone()
-        print(type(found))
-        # print("\n-----------------")
-        # print(f"Nombre: {found[1]}\nTipo: {found[2]}\nDaño: {found[3]}\nEnergía: {found[4]}\nVelocidad: {found[5]}")
-        # print("-----------------")
+        if found is None:
+            cursor.execute(f"SELECT * FROM charge_moves WHERE name = '{string.capwords(look_for)}'")
+            charged_info = cursor.fetchone()
+            print("\nAtaque Cargado.")
+            print("-----------------")
+            print(f"Nombre: {charged_info[1]}\nTipo: {charged_info[2]}\nDaño: {charged_info[3]}\nEnergía: {charged_info[4]}")
+            print("-----------------")
+        else:
+            print("\nAtaque rápido.")
+            print("-----------------")
+            print(f"Nombre: {found[1]}\nTipo: {found[2]}\nDaño: {found[3]}\nEnergía: {found[4]}\nVelocidad: {found[5]}")
+            print("-----------------")
     except Exception as e:
         print(f'Error: {e}')
     con.close()
