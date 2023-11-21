@@ -4,8 +4,8 @@ from lib.GET import call_db
 import string
 
 def table_check():
+    con = call_db()
     try:
-        con = call_db()
         cursor = con.cursor()
         cursor.execute('SELECT * FROM pokemon')
         value = cursor.fetchone()
@@ -17,26 +17,28 @@ def table_check():
             print('\n----------------------------')
             print('La base de datos está vacía.')
             print('----------------------------')
-        con.close()
     except Exception as e:
         print(f'Error {e}')
+    finally:
+        con.close()
 
 def pokemon_show():
+    con = call_db()
     try:
-        con = call_db()
         cursor = con.cursor()
         cursor.execute('SELECT * FROM pokemon')
         pokemon_list = cursor.fetchall()
         for n in pokemon_list:
             print(f'Num {n[1]}: {n[2]}')
-        con.close()
     except Exception as e:
         print(f'Ha ocurrido un error: {e}')
+    finally:
+        con.close()
 
 def pokemon_search():
     con = call_db()
-    cursor = con.cursor()
     try:
+        cursor = con.cursor()
         look_for = input('\nIngresa el nombre del Pokémon:\n')
         cursor.execute(f"SELECT * FROM pokemon WHERE pokename = '{look_for.capitalize()}'")
         found = cursor.fetchone()
@@ -66,12 +68,13 @@ def pokemon_search():
             print('------------------------')
     except Exception as e:
         print(f'Error: {e}')
-    con.close()
+    finally:
+        con.close()
 
 def moves_search():
     con = call_db()
-    cursor = con.cursor()
     try:
+        cursor = con.cursor()
         look_for = input('\nIngresa el nombre del ataque rápido:\n')
         cursor.execute(f"SELECT * FROM fast_moves WHERE name = '{string.capwords(look_for)}'")
         found = cursor.fetchone()
@@ -89,37 +92,38 @@ def moves_search():
             print("-----------------")
     except Exception as e:
         print(f'Error: {e}')
-    con.close()
+    finally:
+        con.close()
 
 def fast_moves_show():
+    con = call_db()
     try:
-        con = call_db()
         cursor = con.cursor()
         cursor.execute('SELECT * FROM fast_moves')
         pokemon_list = cursor.fetchall()
         for n in pokemon_list:
             print(f"{n[1]}: {n[2]} type.")
-        con.close()
     except Exception as e:
         print(f'Ha ocurrido un error: {e}')
+    finally:
+        con.close()
 
 def charged_moves_show():
     con = call_db()
-    cursor = con.cursor()
     try:
-        con = call_db()
         cursor = con.cursor()
         cursor.execute('SELECT * FROM charge_moves')
         pokemon_list = cursor.fetchall()
         for n in pokemon_list:
             print(f"{n[1]}: {n[2]} type.")
-        con.close()
     except Exception as e:
         print(f'Ha ocurrido un error: {e}')
+    finally:
+        con.close()
 
 def reset_tables():
+    con = call_db()
     try:
-        con = call_db()
         tables = [
             'pokemon',
             'fast_moves',
@@ -132,6 +136,7 @@ def reset_tables():
         print('\n--------------------------------------')
         print('Todas las tablas han sido reiniciadas.')
         print('--------------------------------------')
-        con.close()
     except Exception as e:
         print(f'Error: {e}')
+    finally:
+        con.close()
