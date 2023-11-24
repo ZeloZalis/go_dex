@@ -127,7 +127,7 @@ def reset_tables():
         tables = [
             'pokemon',
             'fast_moves',
-            'charge_moves'
+            'charged_moves'
         ]
         cursor = con.cursor()
         for n in tables:
