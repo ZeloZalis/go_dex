@@ -32,12 +32,6 @@ def Create_table():
         cursor.execute("""CREATE TABLE IF NOT EXISTS pokemon_charged_moves (id_pokemon INT NOT NULL, id_charged_moves INT NOT NULL, PRIMARY KEY (id_pokemon, id_charged_moves), FOREIGN KEY (id_pokemon) REFERENCES pokemon (id), FOREIGN KEY (id_charged_moves) REFERENCES charged_moves (id))""")
         con.commit()
         print("Tabla pokemon_charged_moves creada.")
-        # query2 = (3, "charizards", "feire", "flyieng", 111, 222, 333)
-        # insert_query = """INSERT INTO pokemon_test (dexnum, name, type1, type2, atk, hp, def) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-        # cursor.execute(insert_query, query2)
-        # con.commit()
-        # print("Se ha cargado el registro.")
-        # print("Se han guardado los cambios.")
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -118,7 +112,7 @@ def fk_table_upload_fast_moves():
     con = call_db()
     try:
         cursor = con.cursor()
-        getting_moves = requests.get('https://pogoapi.net/api/v1/current_pokemon_moves.json')
+        getting_moves = requests.get(config('API_Pokemon_Moves'))
         data_moves = getting_moves.json()
         cursor.execute("SELECT * FROM pokemon")
         pokemon_list = cursor.fetchall()
@@ -130,7 +124,7 @@ def fk_table_upload_fast_moves():
                     for i in k['fast_moves']:
                         for m in fast_attack_list:
                             if i == m[1]:
-                                cursor.execute(f"INSERT INTO pokemon_fast_moves (id_pokemon, id_fast_moves) VALUES ({n[0]}, {m[0]})")
+                                cursor.execute(f"INSERT INTO pokemon_fast_moves (id_pokemon, id_fast_moves) VALUES ({n[0]}, {m[0]}) ON CONFLICT (id_pokemon, id_fast_moves) DO NOTHING")
                                 print(f"Se ha cargado el ataque {i} en {n[2]}.")
         con.commit()
         print('\n------------------------------------------------------------------')
@@ -145,37 +139,20 @@ def fk_table_upload_charged_moves():
     con = call_db()
     try:
         cursor = con.cursor()
-        getting_moves = requests.get('https://pogoapi.net/api/v1/current_pokemon_moves.json')
+        getting_moves = requests.get(config('API_Pokemon_Moves'))
         data_moves = getting_moves.json()
         cursor.execute("SELECT * FROM pokemon")
         pokemon_list = cursor.fetchall()
         cursor.execute("SELECT * FROM charged_moves")
         charged_moves_list = cursor.fetchall()
-        pokemon_check = ()
         for n in pokemon_list:
             for k in data_moves:
                 if k['form'] == 'Normal' and k['pokemon_name'] == n[2]:
                     for i in k['charged_moves']:
                         for m in charged_moves_list:
                             if i == m[1]:
-                                cursor.execute(f"INSERT INTO pokemon_charged_moves (id_pokemon, id_charged_moves) SELECT ({n[0]}, {m[0]}) WHERE NOT EXISTS (SELECT pokemon_charged_moves WHERE id_pokemon = {n[0]} AND id_charged_moves = {m[0]})")
+                                cursor.execute(f"INSERT INTO pokemon_charged_moves (id_pokemon, id_charged_moves) VALUES ({n[0]}, {m[0]}) ON CONFLICT (id_pokemon, id_charged_moves) DO NOTHING")
                                 print(f"Se ha cargado el ataque {i} en {n[2]}.")
-                                # if pokemon_check:
-                                #     cursor.execute(f"IF NOT EXISTS (SELECT 1 FROM pokemon_charged_moves WHERE id_pokemon = {n[0]} AND id_charged_moves = {m[0]}) THEN INSERT INTO pokemon_charged_moves (id_pokemon, id_charged_moves) VALUES ({n[0]}, {m[0]})")
-                                #     if pokemon_check[-1] != (n[0], m[0]):
-                                #         cursor.execute(f"INSERT INTO pokemon_charged_moves (id_pokemon, id_charged_moves) VALUES ({n[0]}, {m[0]})")
-                                #         print(f"Se ha cargado el ataque {i} en {n[2]}.")
-                                #         cursor.execute(f"SELECT * FROM pokemon_charged_moves WHERE id_pokemon = {n[0]}")
-                                #         pokemon_check = cursor.fetchall()
-                                #         con.commit()
-                                #     else:
-                                #         continue
-                                # else:
-                                #     cursor.execute(f"INSERT INTO pokemon_charged_moves (id_pokemon, id_charged_moves) VALUES ({n[0]}, {m[0]})")
-                                #     print(f"Se ha cargado el ataque {i} en {n[2]}.") 
-                                #     cursor.execute(f"SELECT * FROM pokemon_charged_moves WHERE id_pokemon = {n[0]}")
-                                #     pokemon_check = cursor.fetchall()
-                                #     con.commit()
         con.commit()
         print('\n-------------------------------------------------------------------')
         print('Se ha vinculado los ataques cargados con los Pokémon correctamente.')
@@ -199,9 +176,3 @@ def initialization():
     print('----------------------------------------------------------------')
     print('Se han cargado todos los datos a la base de datos correctamente.')
     print('----------------------------------------------------------------')
-
-# pokemon_upload()
-# fast_moves_upload()
-# charged_moves_upload()
-fk_table_upload_charged_moves()
-# fk_table_upload_fast_moves()

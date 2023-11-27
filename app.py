@@ -19,7 +19,7 @@ options = [
 ]
 
 while answer.answer != '0':
-    def keep_going():
+    def Keep_going():
         option = input('\n¿Desea volver al menú?\n(Y/N)\n')
         option.lower()
         try: 
@@ -32,30 +32,31 @@ while answer.answer != '0':
         print(n)
     select = input('')
     if select == '1': #Revisar el estado de la tabla
-        table_check()
-        keep_going()
+        Table_status()
+        Keep_going()
     elif select == '2': #Mostrar la lista de Pokémon
-        pokemon_show()
-        keep_going()
+        Show_pokemon_list()
+        Keep_going()
     elif select == '3': #Buscar un Pokémon
-        pokemon_search()
-        keep_going()
+        Search_pokemon()
+        Keep_going()
     elif select == '4': #Buscar un ataque cargado/rápido
-        moves_search()
-        keep_going()
+        Search_moves()
+        Keep_going()
     elif select == '5': #Ver la lista de ataques rápidos
-        fast_moves_show()
-        keep_going()
+        Show_fast_moves_list()
+        Keep_going()
     elif select == '6': #Ver la lista de ataques cargados
-        charged_moves_show()
-        keep_going()
+        Show_charged_moves_list()
+        Keep_going()
     elif select == '7': #Cargar la base de datos
         initialization()
-        keep_going()
+        Keep_going()
     elif select == '8': #Vaciar la base de datos
-        reset_tables()
-        keep_going()
+        Reset_tables()
+        Keep_going()
     else:
         print('\n----------------')
         print('Opción inválida.')
         print('----------------')
+# Table_check()
