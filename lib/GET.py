@@ -44,7 +44,7 @@ def Create_table():
 def fast_moves_upload():
     con = call_db()
     try:
-        getting = requests.get(config('API_fast_moves'))
+        getting = requests.get('https://pogoapi.net/api/v1/fast_moves.json')
         data = getting.json()
         cursor = con.cursor()
         insert_query = """ INSERT INTO fast_moves (name, type, power, energy, speed) VALUES (%s,%s,%s,%s,%s)"""
@@ -64,7 +64,7 @@ def fast_moves_upload():
 def charged_moves_upload():
     con = call_db()
     try:
-        getting = requests.get(config('API_charged_moves'))
+        getting = requests.get('https://pogoapi.net/api/v1/charged_moves.json')
         data = getting.json()
         cursor = con.cursor()
         insert_query = """INSERT INTO charged_moves (name, type, power, energy) VALUES (%s,%s,%s,%s)"""
@@ -85,8 +85,8 @@ def pokemon_upload():
     con = call_db()
     try:
         cursor = con.cursor()
-        getting_stats = requests.get(config('API_stats'))
-        getting_types = requests.get(config('API_types'))
+        getting_stats = requests.get('https://pogoapi.net/api/v1/pokemon_stats.json')
+        getting_types = requests.get('https://pogoapi.net/api/v1/pokemon_types.json')
         data_stats = getting_stats.json()
         data_types = getting_types.json()
         for n in data_stats:
@@ -116,7 +116,7 @@ def fk_table_upload_fast_moves():
     con = call_db()
     try:
         cursor = con.cursor()
-        getting_moves = requests.get(config('API_Pokemon_Moves'))
+        getting_moves = requests.get('https://pogoapi.net/api/v1/current_pokemon_moves.json')
         data_moves = getting_moves.json()
         cursor.execute("SELECT * FROM pokemon")
         pokemon_list = cursor.fetchall()
@@ -143,7 +143,7 @@ def fk_table_upload_charged_moves():
     con = call_db()
     try:
         cursor = con.cursor()
-        getting_moves = requests.get(config('API_Pokemon_Moves'))
+        getting_moves = requests.get('https://pogoapi.net/api/v1/current_pokemon_moves.json')
         data_moves = getting_moves.json()
         cursor.execute("SELECT * FROM pokemon")
         pokemon_list = cursor.fetchall()
