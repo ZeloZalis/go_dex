@@ -26,7 +26,6 @@ Its free to use for anyone who found this usefull, but its a very simple script.
 After having everything installed, you need to follow a couple of steps before making this script works well.
 1. First at all, you need to open your pgAdmin4 and setup your user (it will give you the next information: User, Password, Host, Port).
 2. Now you need to create your database, I would recommend, if you are using this, call it "pokedex" or something like that.
-
 ![](https://i.imgur.com/YqMfpDZ.png)
 
 3. After this, you would need to open the script [GET.py](https://github.com/ZeloZalis/go_dex/blob/main/lib/GET.py "GET.py") in any IDE of your preference.
@@ -37,3 +36,5 @@ After having everything installed, you need to follow a couple of steps before m
 Make sure the data is in str, for example:
 
 ![](https://i.imgur.com/bYzMyBz.png)
+
+After those steps you should be able to execute the script, so you will need to go to [app.py](https://github.com/ZeloZalis/go_dex/blob/main/app.py) and run it, automatically it will connect to your DB and check if you have the tables created, if not, it will create it and then you can upload the information of each pokémon using the options in the menu.
