@@ -10,10 +10,6 @@ Its free to use for anyone who found this usefull, but its a very simple script.
 - [PostgreSQL](https://www.postgresql.org/download/ "PostgreSQL")
 - [Python 3.11+](https://www.python.org/downloads/ "Python 3.11+")
 
-## Requeriments (packages)
-- psycopg2
-- requests
-
 ## Objetives
 - Practice SQL
 - Practice GET data from APIs
